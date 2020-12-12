@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+  # docker run -d -p 5000:5000 -t picentral
+  mgmt:
+    image: mgmt:picentral
+    ports:
+      - 5000:5000
+
+  db:
+  # docker run --name <containername>
+    #-e MYSQL_ROOT_PASSWORD=<password for db>
+    #-p <port to allocat on local device>:<internal port>
+    #-d <image>
+    image: db:picentral
+    environment:
+      MYSQL_ROOT_PASSWORD: test
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    #command: sh -c "bash init.sh"
