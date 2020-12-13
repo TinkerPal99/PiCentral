@@ -92,7 +92,7 @@ def expose_installedbase(modell):
         else:
             cur = conn.cursor()
             cur.execute(
-                "INSERT INTO {table} VALUES {values}".format(table="active_vehicles", values=(time(), modell))
+                "INSERT INTO {table}(name) VALUES ('{values}')".format(table="active_vehicles", values=modell)
             )
             conn.commit()
 

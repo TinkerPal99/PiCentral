@@ -26,7 +26,7 @@ docker build -t db database
 
 ##Run the application
 
-Welp, just run the docker compose
+Well, just run the docker compose
 
 ```bash
 docker-compose up
