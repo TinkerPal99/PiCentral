@@ -24,6 +24,10 @@ Then the second is to build the db-image
 docker build -t db database
 ```
 
+Now build the datacollector
+``` bash
+docker build -t dtclltr datacollector
+```
 ##Run the application
 
 Well, just run the docker compose
@@ -58,20 +62,33 @@ Now it's done and the whole application is up.
 
 ## What can I do ?
 Welp, what you can do ? No idea, but for me this will be a central point for my PiFleet.
-A crowd of diffrent drones and rover which will get and send information from/to this central point.
+A crowd of diffirent drones and rover which will get and send information from/to this central point.
 
 Of course the application will grow for this reason, but here are the endpoints you can reach so far.
 
-```
-vehicle administrator
-Admin sst is for user acess, 
-    GET /duty lists all vehicles that are currently in use
-    GET /avail lists all available hardware informationsheets
 
-Vehicle sst
-    GET /ib/<modell> returns modell-hardware informationsheet and sets vehicle on active duty
-    DELETE /ib/<modell takes modell from active duty
-```
+management
+
+   Admin sst is for user acess, 
+       GET /duty lists all vehicles that are currently in use
+       GET /avail lists all available hardware informationsheets
+
+   Vehicle sst
+       GET /ib/<modell> returns modell-hardware informationsheet and sets vehicle on active duty
+       DELETE /ib/<modell takes modell from active duty
+
+datacollector
+   
+   POST /up upload data here, using following json-form
+      ```
+      {
+      "collector": "postman",
+      "reading": "36.0"
+      }
+      ```
+
+   GET /data returns collected data
+
 
 ### What will come next ?
 Of course I will add an interface to add or delete hardware informationsheets.

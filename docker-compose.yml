@@ -21,3 +21,8 @@ services:
     ports:
       - 8080:8080
     #command: sh -c "bash init.sh"
+
+  datacollector:
+    image: dtclltr:picentral
+    ports:
+      - 5001:5001
