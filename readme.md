@@ -1,6 +1,6 @@
 # PiCentral
 
-This is a new version of my [EZB](https://github.com/TinkerPal99/ZentraleProzessEinheit) using FLASK and a REST-API as 
+This is a new version of my [ZPE](https://github.com/TinkerPal99/ZentraleProzessEinheit) using FLASK and a REST-API as 
 well as a database.
 
 Deploying is now much easier because of Docker, just build the images, run the docker-compose, set up the database and 
