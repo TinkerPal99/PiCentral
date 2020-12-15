@@ -5,10 +5,10 @@ USE picentral;
 CREATE TABLE active_vehicles (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(20) NOT NULL,
-PRIMARY KEY (id))
+PRIMARY KEY (id));
 
 CREATE TABLE collected_data (
-    timeuuid INT NOT NULL,
+    timeuuid VARCHAR(22) NOT NULL,
     collector VARCHAR(20) NOT NULL,
     reading FLOAT,
-PRIMARY KEY (timeuuid))
+PRIMARY KEY (timeuuid));

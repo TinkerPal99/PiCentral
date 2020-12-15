@@ -15,17 +15,6 @@ host = "db"
 port = 3306
 database = "picentral"
 
-'''
-vehicle administrator
-Admin sst is for user acess, 
-    GET /duty lists all vehicles that are currently in use
-    GET /avail lists al available IBs
-
-Vehicle sst
-    GET /ib/<modell> returns modell-ib and sets vehicle on active duty
-    DELETE /ib/<modell> takes given modell from active duty
-'''
-
 
 # ---------------------Admin SST------------------
 @app.route("/data", methods=['Get'])
@@ -87,6 +76,3 @@ def upload_data():
         conn.commit()
 
     return flask.make_response(str(str(data) + "added"), 200)
-
-
-
