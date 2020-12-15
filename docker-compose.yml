@@ -3,8 +3,9 @@ services:
   # docker run -d -p 5000:5000 -t picentral
   mgmt:
     image: mgmt:picentral
-    ports:
-      - 5000:5000
+    #ports:
+      # proxied via proxy_mgmt
+      # - 5000:5000
 
   db:
   # docker run --name <containername>
@@ -24,5 +25,31 @@ services:
 
   datacollector:
     image: dtclltr:picentral
+    #ports:
+      # proxied via proxy_datacollector
+      #- 5001:5001
+
+
+  proxy_mgmt:
+    image: pottava/proxy
     ports:
-      - 5001:5001
+      - 5000:80
+    links:
+      - mgmt
+    environment:
+      - PROXY_URL=http://mgmt:5000/
+      - BASIC_AUTH_USER=mgmentor
+      - BASIC_AUTH_PASS=password
+      - ACCESS_LOG=true
+
+  proxy_datacollector:
+    image: pottava/proxy
+    ports:
+      - 5001:80
+    links:
+      - datacollector
+    environment:
+      - PROXY_URL=http://datacollector:5001/
+      - BASIC_AUTH_USER=datacollector
+      - BASIC_AUTH_PASS=password
+      - ACCESS_LOG=true

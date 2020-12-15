@@ -37,7 +37,7 @@ docker-compose up
 ```
 
 ## The Database has to be set up
-Stilllooking into autmating this one. Ideas welcome, but until then
+Still looking into autmating this one. Ideas welcome, but until then
 
 1. open localhost:8080
 2. log in with these credentials
@@ -52,9 +52,16 @@ CREATE DATABASE picentral;
 
 USE picentral;
 
-CREATE TABLE active_vehicles (id INT NOT NULL AUTO_INCREMENT,
-name VARCHAR(20) NOT NULL,
+CREATE TABLE active_vehicles (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(20) NOT NULL,
 PRIMARY KEY (id))
+
+CREATE TABLE collected_data (
+    timeuuid INT NOT NULL,
+    collector VARCHAR(20) NOT NULL,
+    reading FLOAT,
+PRIMARY KEY (timeuuid))
 
 ```
 
@@ -64,8 +71,8 @@ Now it's done and the whole application is up.
 Welp, what you can do ? No idea, but for me this will be a central point for my PiFleet.
 A crowd of diffirent drones and rover which will get and send information from/to this central point.
 
-Of course the application will grow for this reason, but here are the endpoints you can reach so far.
-
+Of course the application will grow to achieve this goal, but here are the endpoints you can reach so far.
+As seen in the docker-compose, the apis are only reachable through proxy. FOr this I use the dockerimage pottava/proxy
 
 management
 
