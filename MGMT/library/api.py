@@ -2,7 +2,8 @@ import flask
 import json
 from os import listdir
 import mariadb
-from time import time
+from flask import request
+import xml.etree.ElementTree as etree
 
 app = flask.Flask("MGMT:PiCentral")
 
@@ -68,6 +69,22 @@ def expose_avail_json():
 
             available.append(data)
         return flask.make_response(json.dumps(available), 200)
+
+
+@app.route("/ib/add/<modell>", methods=['Post'])
+def new_ib(modell):
+    """
+    GH#4
+    :param modell: name of the ib-modell to add
+    :return: flaskresponse
+    """
+    xml = request.data.decode()
+    tree = etree.ElementTree(etree.fromstring(xml))
+    root = tree.getroot()
+
+    tree.write(open("xml/" + modell + ".xml", "wb")
+    )
+    return flask.make_response(xml, 201)
 
 
 # ----------------------vehicle SST--------------------
