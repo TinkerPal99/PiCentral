@@ -56,7 +56,7 @@ def expose_dutylist_json():
 
 @app.route("/avail", methods=['Get'])
 def expose_avail_json():
-    avail = listdir(path="xml/")
+    avail = listdir(path="ib/")
 
     if not avail:
         return flask.make_response("No vehicles available", 204)
@@ -87,7 +87,7 @@ def new_ib():
     created = []
     try:
         for base in ib:
-            f = open("xml/" + base + ".json", "x")
+            f = open("ib/" + base + ".json", "x")
             try:
                 f.write(json.dumps(ib.get(base)))
             finally:
@@ -104,11 +104,11 @@ def new_ib():
 def expose_installedbase(modell):
     f = None
     try:
-        f = open("xml/{file}.xml".format(file=modell)).read()
+        f = open("ib/{file}.ib".format(file=modell)).read()
     except FileNotFoundError:
         pass
     try:
-        f = open("xml/{file}.json".format(file=modell)).read()
+        f = open("ib/{file}.json".format(file=modell)).read()
     except FileNotFoundError:
         pass
 

@@ -7,7 +7,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN rm requirements.txt
 
 #prepare app
-COPY xml ./xml
+COPY ib ./xml
 COPY library ./library
 COPY picentral.py ./
 
