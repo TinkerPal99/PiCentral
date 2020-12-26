@@ -56,7 +56,7 @@ def expose_dutylist_json():
 
 @app.route("/avail", methods=['Get'])
 def expose_avail_json():
-    avail = listdir(path="../xml/")
+    avail = listdir(path="xml/")
 
     if not avail:
         return flask.make_response("No vehicles available", 204)
@@ -71,49 +71,68 @@ def expose_avail_json():
         return flask.make_response(json.dumps(available), 200)
 
 
-@app.route("/ib/add/<modell>", methods=['Post'])
-def new_ib(modell):
+@app.route("/ib/add/", methods=['Post'])
+def new_ib():
     """
     GH#4
-    :param modell: name of the ib-modell to add
     :return: flaskresponse
     """
-    xml = request.data.decode()
-    tree = etree.ElementTree(etree.fromstring(xml))
-    root = tree.getroot()
+    try:
+        assert "json" in request.headers.get("Content-Type")
+    except AssertionError:
+        flask.make_response("Format not supported", 415)
 
-    tree.write(open("xml/" + modell + ".xml", "wb")
-    )
-    return flask.make_response(xml, 201)
+    ib = request.data
+    ib = json.loads(ib)
+    created = []
+    try:
+        for base in ib:
+            f = open("xml/" + base + ".json", "x")
+            try:
+                f.write(json.dumps(ib.get(base)))
+            finally:
+                f.close()
+            created.append(base)
+    except FileExistsError:
+        return flask.make_response("File exists", 409)
+    else:
+        return flask.make_response(json.dumps(created), 201)
 
 
 # ----------------------vehicle SST--------------------
 @app.route("/ib/<modell>", methods=['Get'])
 def expose_installedbase(modell):
+    f = None
     try:
         f = open("xml/{file}.xml".format(file=modell)).read()
     except FileNotFoundError:
-        flask.make_response(404)
+        pass
+    try:
+        f = open("xml/{file}.json".format(file=modell)).read()
+    except FileNotFoundError:
+        pass
 
+    if f is None:
+        return flask.make_response(404)
+
+    try:
+        conn = mariadb.connect(
+            user=user,
+            password=password,
+            host=host,
+            port=port,
+            database=database
+        )
+    except mariadb.Error as e:
+        print("MAJOR ERROR: " + e)
     else:
-        try:
-            conn = mariadb.connect(
-                user=user,
-                password=password,
-                host=host,
-                port=port,
-                database=database
-            )
-        except mariadb.Error as e:
-            print(e)
-        else:
-            cur = conn.cursor()
-            cur.execute(
-                "INSERT INTO {table}(name) VALUES ('{values}')".format(table="active_vehicles", values=modell)
-            )
-            conn.commit()
+        cur = conn.cursor()
+        cur.execute(
+            "INSERT INTO {table}(name) VALUES ('{values}')".format(table="active_vehicles", values=modell)
+        )
+        conn.commit()
 
-        return flask.make_response(str(f), 200)
+    return flask.make_response(str(f), 200)
 
 
 @app.route("/ib/<modell>", methods=['Delete'])

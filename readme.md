@@ -79,24 +79,7 @@ management
    Admin sst is for user acess, 
        GET /duty lists all vehicles that are currently in use
        GET /avail lists all available hardware informationsheets 
-       GET /ib/add/<modell> add a new ib for <modell> here, following this template
-        ```
-        <root>
-            <Name>PiPod Mark I</Name>
-            <Status>Ready</Status>
-            <JobUrl>0</JobUrl>
-            <JOL>True</JOL>
-            <Adminpasscode>6489 3956</Adminpasscode>
-            <data>
-                <FW>0</FW>
-                <BW>0</BW>
-            </data>
-            <License>
-                <Distance>False</Distance>
-                <Airsense>False</Airsense>
-            </License>
-        </root>
-        ```
+       GET /ib/add/<modell> add a new ib for <modell> here, in the moment, only json is supported
 
    Vehicle sst
        GET /ib/<modell> returns modell-hardware informationsheet and sets vehicle on active duty
