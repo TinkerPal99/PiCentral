@@ -77,16 +77,23 @@ def new_ib():
     GH#4
     :return: flaskresponse
     """
+    base = None
+    created = []
     try:
-        assert "json" in request.headers.get("Content-Type")
+        print(request.headers.get("Content-Type"))
+        assert "json" or "xml" in request.headers.get("Content-Type")
     except AssertionError:
-        flask.make_response("Format not supported", 415)
+        return flask.make_response("Format not supported \n currently supporting JSON and XML", 415)
 
     ib = request.data
     ib = json.loads(ib)
-    created = []
+
     try:
         for base in ib:
+            assert "Name" and "Status" in ib[base].keys()
+            if len(ib[base]) <= 2:
+                ib[base]["Status"] = "Inactive"
+
             f = open("ib/" + base + ".json", "x")
             try:
                 f.write(json.dumps(ib.get(base)))
@@ -94,7 +101,8 @@ def new_ib():
                 f.close()
             created.append(base)
     except FileExistsError:
-        return flask.make_response("File exists", 409)
+        return flask.make_response(base + " IB exists \n Maybe you wanted to update it ? \n " + json.dumps(created) +
+                                   " were added.", 409)
     else:
         return flask.make_response(json.dumps(created), 201)
 
@@ -104,7 +112,7 @@ def new_ib():
 def expose_installedbase(modell):
     f = None
     try:
-        f = open("ib/{file}.ib".format(file=modell)).read()
+        f = open("ib/{file}.xml".format(file=modell)).read()
     except FileNotFoundError:
         pass
     try:
@@ -124,7 +132,7 @@ def expose_installedbase(modell):
             database=database
         )
     except mariadb.Error as e:
-        print("MAJOR ERROR: " + e)
+        print("MAJOR ERROR: " + str(e))
     else:
         cur = conn.cursor()
         cur.execute(
@@ -136,7 +144,7 @@ def expose_installedbase(modell):
 
 
 @app.route("/ib/<modell>", methods=['Delete'])
-def deactivate_vehicle(modell):
+def rest_vehicle(modell):
     try:
         conn = mariadb.connect(
             user=user,

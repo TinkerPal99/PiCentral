@@ -80,6 +80,16 @@ management
        GET /duty lists all vehicles that are currently in use
        GET /avail lists all available hardware informationsheets 
        GET /ib/add/<modell> add a new ib for <modell> here, in the moment, only json is supported
+        Minimal IB like this, Multiple IBs can be added by one update
+        If minimal IB is given, status will be set as inactive
+```json
+{
+"mobile":{
+        "Name": "xyz",
+        "Status": "Inactive"
+         }
+}
+```
 
    Vehicle sst
        GET /ib/<modell> returns modell-hardware informationsheet and sets vehicle on active duty
