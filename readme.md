@@ -1,3 +1,5 @@
+[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/TinkerPal99/PiCentral)
+
 # PiCentral
 
 This is a new version of my [ZPE](https://github.com/TinkerPal99/ZentraleProzessEinheit) using FLASK and a REST-API as 
